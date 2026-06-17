@@ -39,11 +39,11 @@ Open Admin Panel Backend: http://127.0.0.1:8000/admin/
    pip install -r requirements.txt
 
 2.Database Initialization
-  ```bash
+   ```bash
    python manage.py makemigrations
    python manage.py migrate
 
-3.Start Frontend Server
-```bash
+Start Frontend Server
+
 python manage.py runserver
   
