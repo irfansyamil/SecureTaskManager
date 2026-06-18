@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Account</title>
+
+    <style>
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#f4f6f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            margin:0;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            width:450px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            text-align:center;
+            color:#198754;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin-top:8px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:6px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#198754;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#157347;
+        }
+
+        p{
+            text-align:center;
+        }
+
+        a{
+            color:#198754;
+            text-decoration:none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>📝 Create New Account</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">
+            Register
+        </button>
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="/login/">Login Here</a>
+    </p>
+
+</div>
+
+</body>
+</html>

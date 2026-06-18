@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Task Management - Login</title>
+
+    <style>
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#f4f6f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            margin:0;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            width:400px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            text-align:center;
+            color:#0d6efd;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin-top:8px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:6px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#0d6efd;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0b5ed7;
+        }
+
+        a{
+            color:#0d6efd;
+            text-decoration:none;
+        }
+
+        p{
+            text-align:center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🔐 Secure Task Management</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">
+            Login
+        </button>
+    </form>
+
+    <p>
+        No account?
+        <a href="/register/">Register Here</a>
+    </p>
+
+</div>
+
+</body>
+</html>

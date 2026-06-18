@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delete Task</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
+
+.card{
+    width:500px;
+    margin:100px auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+button{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+a{
+    margin-left:10px;
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>⚠ Confirm Delete</h2>
+
+    <p>
+        Are you sure you want to delete:
+        <strong>{{ task.title }}</strong> ?
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Delete
+        </button>
+
+        <a href="{% url 'dashboard' %}">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

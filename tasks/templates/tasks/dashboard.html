@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Secure Task Management System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fc;
+}
+
+.navbar{
+    background:#0d6efd;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav-menu{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.nav-menu a{
+    color:white;
+    text-decoration:none;
+    padding:10px 15px;
+    border-radius:6px;
+}
+
+.nav-menu a:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.logout-btn:hover{
+    background:#bb2d3b;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+    margin-top:30px;
+}
+
+.welcome{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom:25px;
+}
+
+.welcome h2{
+    color:#0d6efd;
+}
+
+.welcome p{
+    color:#666;
+    margin-top:10px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.card h3{
+    color:#666;
+    margin-bottom:10px;
+}
+
+.card .number{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.total{
+    border-left:6px solid #0d6efd;
+}
+
+.pending-card{
+    border-left:6px solid #ffc107;
+}
+
+.done-card{
+    border-left:6px solid #198754;
+}
+
+.task-section{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.add-btn{
+    text-decoration:none;
+    background:#198754;
+    color:white;
+    padding:10px 15px;
+    border-radius:6px;
+}
+
+.add-btn:hover{
+    background:#157347;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#0d6efd;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+    background:#f8f9fa;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.pending{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.progress{
+    background:#cff4fc;
+    color:#055160;
+}
+
+.done{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.edit-btn{
+    background:#ffc107;
+    color:black;
+    padding:8px 12px;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    padding:8px 12px;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+.footer{
+    text-align:center;
+    padding:30px;
+    color:#888;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        🔐 Secure Task Management
+    </div>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'task_create' %}">
+            Add Task
+        </a>
+
+        {% if request.user.is_staff %}
+        <a href="{% url 'audit_log' %}">
+            Audit Log
+        </a>
+        {% endif %}
+
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                Logout
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h2>
+            Welcome, {{ request.user.username }}
+        </h2>
+
+        <p>
+            Securely manage your tasks with authentication, authorization, audit logging and access control.
+        </p>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="card total">
+            <h3>Total Tasks</h3>
+            <div class="number">
+                {{ total_tasks }}
+            </div>
+        </div>
+
+        <div class="card pending-card">
+            <h3>Pending Tasks</h3>
+            <div class="number">
+                {{ pending_tasks }}
+            </div>
+        </div>
+
+        <div class="card done-card">
+            <h3>Completed Tasks</h3>
+            <div class="number">
+                {{ completed_tasks }}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="task-section">
+
+        <div class="section-header">
+
+            <h2>📋 My Tasks</h2>
+
+            <a href="{% url 'task_create' %}" class="add-btn">
+                + Add New Task
+            </a>
+
+        </div>
+
+        {% if tasks %}
+
+        <table>
+
+            <tr>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                <th>Action</th>
+            </tr>
+
+            {% for task in tasks %}
+
+            <tr>
+
+                <td>{{ task.title }}</td>
+
+                <td>{{ task.description }}</td>
+
+                <td>
+                    {% if task.status == 'pending' %}
+                        <span class="badge pending">Pending</span>
+
+                    {% elif task.status == 'in_progress' %}
+                        <span class="badge progress">In Progress</span>
+
+                    {% elif task.status == 'done' %}
+                        <span class="badge done">Completed</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ task.created_at|date:"d M Y" }}
+                    <br>
+                    <small>{{ task.created_at|time:"H:i" }}</small>
+                </td>
+
+                <td>
+                    <a href="{% url 'task_update' task.id %}" class="edit-btn">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'task_delete' task.id %}" class="delete-btn">
+                        Delete
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Tasks Found</h3>
+
+            <br>
+
+            <a href="{% url 'task_create' %}" class="add-btn">
+                Create First Task
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="footer">
+        Secure Software Development Assignment © 2026
+    </div>
+
+</div>
+
+</body>
+</html>
