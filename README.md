@@ -1,5 +1,9 @@
 # Secure Task Manager
 
+### Author
+Developed for Secure Software Development 
+Universiti Kuala Lumpur
+
 ### Project Description
 
 This project is a secure web-based task management system developed for the Secure Software Development course. The system provides secure task management functionalities while implementing secure coding practices and web vulnerability mitigation mechanisms.
